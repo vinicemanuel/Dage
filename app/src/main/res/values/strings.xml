@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Dage</string>
-    <string name="google_maps_key" translatable="false">AIzaSyDSunN0UiXpuNWiXzeJ62e_aPQQnYpdNNs</string>
+    <string name="google_maps_key" translatable="false" >AIzaSyDSunN0UiXpuNWiXzeJ62e_aPQQnYpdNNs</string>
 </resources>
