@@ -1,22 +1,50 @@
 package com.if1001.cin.dage
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.MapStyleOptions
 import kotlinx.android.synthetic.main.home_activity.*
+import java.util.*
 
-class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
+class HomeActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
+
 
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
 
+    private val UPDATE_INTERVAL = (2 * 1000).toLong()  /* 10 secs */
+    private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
+
     private lateinit var mMap: GoogleMap
+    private lateinit var mLocationManager: LocationManager
+    private lateinit var mGeocoder: Geocoder
+
+    override fun onLocationChanged(location: Location) {
+        Log.d("location: ", "update location " + location.toString())
+        val cord = "(${location.latitude.format(2)}, ${location.longitude.format(2)})"
+        this.gpsCoordinates.text = cord
+
+        val addresses = this.mGeocoder.getFromLocation(location.latitude,location.longitude,1)
+
+        val city = addresses[0].locality
+        val address = addresses[0].getAddressLine(0)
+        val fullAddress = "$city, $address"
+        this.userLocation.text = fullAddress
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    override fun onProviderEnabled(provider: String?) {}
+    override fun onProviderDisabled(provider: String?) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +58,9 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_ID_MULTIPLE_PERMISSIONS)
         }else{
+            this.mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            this.mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000L, 1f, this)
+            this.mGeocoder = Geocoder(applicationContext, Locale.getDefault())
             this.configMap()
         }
     }
@@ -56,9 +87,10 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.mMap = googleMap
-        Log.d("Permission: ", "deve carregar o mapa aqui")
-        var myMapStyle = "https://maps.googleapis.com/maps/api/staticmap?key=${R.string.google_maps_key}&center=-8.0610057,-34.8712797&zoom=12&format=png&maptype=roadmap&size=480x360"
-        var style = MapStyleOptions(myMapStyle)
-        this.mMap.setMapStyle(style)
+        try {
+            this.mMap.isMyLocationEnabled = true
+        }catch (e: SecurityException){
+            Log.d("Permission: ", "negando permissão")
+        }
     }
 }
