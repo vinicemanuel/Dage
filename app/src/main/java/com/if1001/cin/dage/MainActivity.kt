@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         button_login_spotify.setOnClickListener(View.OnClickListener {
             Log.d("login_debug: ", "click login")
-            val i = Intent(applicationContext, HomeActivity::class.java)
+            val i = Intent(applicationContext, MenuActivity::class.java)
             applicationContext.startActivity(i)
         })
     }
