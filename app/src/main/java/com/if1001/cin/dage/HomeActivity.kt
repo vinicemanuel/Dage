@@ -22,9 +22,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
 
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
 
-    private val UPDATE_INTERVAL = (2 * 1000).toLong()  /* 10 secs */
-    private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
-
     private lateinit var mMap: GoogleMap
     private lateinit var mLocationManager: LocationManager
     private lateinit var mGeocoder: Geocoder
