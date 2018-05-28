@@ -10,6 +10,10 @@ import kotlinx.android.synthetic.main.activity_menu.*
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var homeFragment: HomeFragment
+    private lateinit var pastWorkoutsFragment: PastWorkoutsFragment
+
+    private val HOME_FRAGMENT_TAG = "homeTag"
+    private val PAST_WORKOUTS_TAG = "pastWorkouts"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +29,8 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         this.homeFragment = HomeFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.homeFragment).commit()
+        this.pastWorkoutsFragment = PastWorkoutsFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.homeFragment, HOME_FRAGMENT_TAG).commit()
 
     }
 
@@ -42,13 +47,23 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-
+                val fragment = fragmentManager.findFragmentByTag(HOME_FRAGMENT_TAG)
+                if (fragment == null){
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.homeFragment, HOME_FRAGMENT_TAG).commit()
+                }else if (fragment.isHidden){
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.homeFragment, HOME_FRAGMENT_TAG).commit()
+                }
             }
             R.id.nav_logout -> {
 
             }
             R.id.nav_past -> {
-
+                val fragment = fragmentManager.findFragmentByTag(PAST_WORKOUTS_TAG)
+                if (fragment == null){
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.pastWorkoutsFragment, PAST_WORKOUTS_TAG).commit()
+                }else if (fragment.isHidden){
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.pastWorkoutsFragment, PAST_WORKOUTS_TAG).commit()
+                }
             }
         }
 
