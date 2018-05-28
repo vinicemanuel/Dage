@@ -7,6 +7,9 @@
         <item
             android:id="@+id/nav_home"
             android:title="home" />
+        <item
+            android:id="@+id/nav_past"
+            android:title="Past Workouts"/>
     </group>
 
     <item android:title="">
