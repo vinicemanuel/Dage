@@ -1,4 +1,4 @@
-package com.if1001.cin.dage
+package com.if1001.cin.dage.fragments
 
 import android.Manifest
 import android.app.Activity
@@ -8,7 +8,6 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
@@ -20,6 +19,8 @@ import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.if1001.cin.dage.R
+import com.if1001.cin.dage.format
 import java.util.*
 
 
