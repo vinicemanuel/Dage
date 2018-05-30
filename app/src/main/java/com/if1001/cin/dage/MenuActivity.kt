@@ -14,10 +14,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var homeFragment: HomeFragment
     private lateinit var pastWorkoutsFragment: PastWorkoutsFragment
 
-    private val HOME_FRAGMENT_TAG = "homeTag"
-    private val PAST_WORKOUTS_TAG = "pastWorkouts"
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
@@ -32,6 +28,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         this.homeFragment = HomeFragment()
         this.pastWorkoutsFragment = PastWorkoutsFragment()
+
         supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.homeFragment, HOME_FRAGMENT_TAG).commit()
 
     }

@@ -15,12 +15,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.if1001.cin.dage.MAP_PLAY_LIST_TAG
 import com.if1001.cin.dage.R
 import com.if1001.cin.dage.format
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.util.*
 
 
@@ -35,6 +38,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var mapView: MapView
     private lateinit var gpsCoordinates: TextView
     private lateinit var userLocation: TextView
+    private lateinit var initButton: Button
+
+    private lateinit var mapPlaylistFragment: MapPlaylistFragment
 
     override fun onLocationChanged(location: Location) {
         Log.d("location: ", "update location " + location.toString())
@@ -62,9 +68,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         // Inflate the layout for this fragment
         this.myView = inflater.inflate(R.layout.fragment_home, container, false)
 
-        this.mapView = myView.findViewById(R.id.mapView)
-        this.gpsCoordinates = myView.findViewById(R.id.gpsCoordinates)
-        this.userLocation = myView.findViewById(R.id.userLocation)
+        this.mapView = this.myView.mapView
+        this.gpsCoordinates = this.myView.gpsCoordinates
+        this.userLocation = this.myView.userLocation
+        this.initButton = this.myView.playButton
+
+        this.mapPlaylistFragment = MapPlaylistFragment()
+
+        this.initButton.setOnClickListener {
+            val fragment = fragmentManager!!.findFragmentByTag(MAP_PLAY_LIST_TAG)
+            if (fragment == null){
+                activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.mapPlaylistFragment, MAP_PLAY_LIST_TAG).commit()
+            }else if (fragment.isHidden){
+                activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.mapPlaylistFragment, MAP_PLAY_LIST_TAG).commit()
+            }
+        }
 
         this.requestUserPermissions()
         return this.myView
