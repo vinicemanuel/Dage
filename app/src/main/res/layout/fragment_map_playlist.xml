@@ -9,7 +9,7 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapViewPlayList"
         android:layout_width="0dp"
-        android:layout_height="200"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,6 +25,7 @@
         app:layout_constraintTop_toBottomOf="@+id/mapViewPlayList" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_view_playlist"
         android:layout_width="368dp"
         android:layout_height="260dp"
         android:layout_marginTop="8dp"
