@@ -58,6 +58,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         this.homeFragment = HomeFragment()
         this.pastWorkoutsFragment = PastWorkoutsFragment()
+
         supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.homeFragment, HOME_FRAGMENT_TAG).commit()
 
     }
