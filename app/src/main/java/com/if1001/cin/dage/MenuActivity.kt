@@ -17,6 +17,8 @@ import com.if1001.cin.dage.fragments.PastWorkoutsFragment
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_menu.*
+import kotlinx.android.synthetic.main.cell_past_workouts.view.*
+import kotlinx.android.synthetic.main.nav_header_menu.view.*
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -33,9 +35,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val mOkHttpClient = OkHttpClient()
     private var mCall: Call? = null
-
-    private val HOME_FRAGMENT_TAG = "homeTag"
-    private val PAST_WORKOUTS_TAG = "pastWorkouts"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,11 +128,17 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
                         val hView = navigationView.inflateHeaderView(R.layout.nav_header_menu)
 
-                        val imageView = hView.findViewById(R.id.imageView) as ImageView
-                        val tv = hView.findViewById(R.id.user_name) as TextView
+                        val imageView = hView.imageView
+                        val tv = hView.user_name
 
-                        Picasso.get().load(jsonObject.getJSONArray("images").getJSONObject(0).getString("url")).into(imageView)
-                        tv.setText(jsonObject.getString("display_name"))
+                        val displayName = jsonObject.getString(SPOTIFY_JSON_KEY_DISPLAY_NAME)
+                        val imageURL = jsonObject.getJSONArray(SPOTIFY_JSON_KEY_IMAGES).getJSONObject(0).getString(SPOTIFY_JSON_KEY_IMAGE_URL)
+                        val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
+
+                        Log.d("USER_INFOS", "$displayName $imageURL $email")
+
+                        Picasso.get().load(imageURL).into(imageView)
+                        tv.text = displayName
                     }
                 } catch (e: JSONException) {
                     Log.d("Request", "Failed to parse data: $e")
@@ -147,7 +152,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
         val response = AuthenticationClient.getResponse(resultCode, data)
 
-        if (AUTH_TOKEN_REQUEST_CODE === requestCode) {
+        if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             userToken = response.accessToken
         }
     }

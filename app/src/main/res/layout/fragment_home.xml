@@ -29,13 +29,15 @@
             android:id="@+id/userLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:layout_marginLeft="8dp"/>
 
         <TextView
             android:id="@+id/gpsCoordinates"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:layout_marginLeft="8dp"/>
     </LinearLayout>
 
     <Button

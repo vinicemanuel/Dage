@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.if1001.cin.dage.R
-import com.if1001.cin.dage.Workout
+import com.if1001.cin.dage.model.Workout
 import kotlinx.android.synthetic.main.cell_past_workouts.view.*
 
 class PastWorkoutsAdapter (private val workouts: List<Workout>, private val act: Activity): RecyclerView.Adapter<PastWorkoutsAdapter.PastWorkoutsHolder>() {
@@ -26,7 +26,7 @@ class PastWorkoutsAdapter (private val workouts: List<Workout>, private val act:
         val holder = PastWorkoutsHolder(view)
         holder.button = view.shareButton
         holder.textLocation = view.textLocation
-        holder.imageView = view.imageView
+        holder.imageView = view.cell_imageView
         holder.textPlayListName = view.textPlayListName
 
         holder.button.setOnClickListener { Log.d("cick: ", "compartilhado via Dage") }

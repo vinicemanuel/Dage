@@ -8,7 +8,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.if1001.cin.dage.PlayList
+import com.if1001.cin.dage.model.PlayList
 import com.if1001.cin.dage.R
 import com.if1001.cin.dage.adapters.PlayListsAdapter
 import kotlinx.android.synthetic.main.fragment_map_playlist.view.*
