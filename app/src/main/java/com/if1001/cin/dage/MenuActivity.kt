@@ -134,8 +134,9 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val displayName = jsonObject.getString(SPOTIFY_JSON_KEY_DISPLAY_NAME)
                         val imageURL = jsonObject.getJSONArray(SPOTIFY_JSON_KEY_IMAGES).getJSONObject(0).getString(SPOTIFY_JSON_KEY_IMAGE_URL)
                         val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
+                        val id = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
 
-                        Log.d("USER_INFOS", "$displayName $imageURL $email")
+                        Log.d("USER_INFOS", "$displayName $imageURL $email $id")
 
                         Picasso.get().load(imageURL).into(imageView)
                         tv.text = displayName
