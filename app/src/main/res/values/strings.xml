@@ -8,7 +8,13 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="spotify_login_btn_text">{fa-spotify} LOGIN WITH SPOTIFY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="com_spotify_sdk_redirect_scheme">dage</string>
+    <string name="com_spotify_sdk_redirect_host">login</string>
+
+    <string name="spotify_client_id">81579c66dad34b95a46b53a0d226d8c3</string>
 </resources>

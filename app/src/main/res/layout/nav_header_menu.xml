@@ -12,14 +12,13 @@
         android:id="@+id/imageView"
         android:layout_width="30pt"
         android:layout_height="30pt"
-        app:srcCompat="@mipmap/ic_launcher_round"
         android:layout_marginLeft="18pt"
         android:layout_gravity="center"/>
 
     <TextView
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fulano de tal"
         android:textSize="20dp"
         android:layout_gravity="center"
         android:layout_marginLeft="10pt"/>
