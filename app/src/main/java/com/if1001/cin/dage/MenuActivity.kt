@@ -10,14 +10,11 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import com.if1001.cin.dage.fragments.HomeFragment
 import com.if1001.cin.dage.fragments.PastWorkoutsFragment
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_menu.*
-import kotlinx.android.synthetic.main.cell_past_workouts.view.*
 import kotlinx.android.synthetic.main.nav_header_menu.view.*
 import okhttp3.*
 import org.json.JSONException
@@ -123,6 +120,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val jsonObject = JSONObject(response.body()?.string())
                     Log.d("Response", jsonObject.toString())
 
+                    val displayName = jsonObject.getString(SPOTIFY_JSON_KEY_DISPLAY_NAME)
+                    val imageURL = jsonObject.getJSONArray(SPOTIFY_JSON_KEY_IMAGES).getJSONObject(0).getString(SPOTIFY_JSON_KEY_IMAGE_URL)
+                    val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
+                    val id = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
+
+                    Log.d("USER_INFOS", "$displayName $imageURL $email $id")
+
                     // UI changes have to be done into UI Thread
                     runOnUiThread {
                         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
@@ -131,14 +135,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val imageView = hView.imageView
                         val tv = hView.user_name
 
-                        val displayName = jsonObject.getString(SPOTIFY_JSON_KEY_DISPLAY_NAME)
-                        val imageURL = jsonObject.getJSONArray(SPOTIFY_JSON_KEY_IMAGES).getJSONObject(0).getString(SPOTIFY_JSON_KEY_IMAGE_URL)
-                        val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
-                        val id = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
+                        if (imageURL.contains("facebook")) {
+                            var fbUrl = "https://graph.facebook.com/${imageURL.split("&").get(0).split("=").get(1)}/picture?width=64&height=64"
+                            Picasso.get().load(fbUrl).into(imageView)
+                        } else {
+                            Picasso.get().load(imageURL).into(imageView)
+                        }
 
-                        Log.d("USER_INFOS", "$displayName $imageURL $email $id")
-
-                        Picasso.get().load(imageURL).into(imageView)
                         tv.text = displayName
                     }
                 } catch (e: JSONException) {

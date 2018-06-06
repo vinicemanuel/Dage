@@ -9,13 +9,13 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -38,7 +38,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var mapView: MapView
     private lateinit var gpsCoordinates: TextView
     private lateinit var userLocation: TextView
-    private lateinit var initButton: Button
+    private lateinit var initButton: FloatingActionButton
 
     private lateinit var mapPlaylistFragment: MapPlaylistFragment
 
@@ -47,7 +47,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         val cord = "(${location.latitude.format(2)}, ${location.longitude.format(2)})"
         this.gpsCoordinates.text = cord
 
-        val addresses = this.mGeocoder.getFromLocation(location.latitude,location.longitude,1)
+        val addresses = this.mGeocoder.getFromLocation(location.latitude, location.longitude, 1)
 
         val city = addresses[0].locality
         val address = addresses[0].getAddressLine(0)
@@ -77,9 +77,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
         this.initButton.setOnClickListener {
             val fragment = fragmentManager!!.findFragmentByTag(MAP_PLAY_LIST_TAG)
-            if (fragment == null){
+            if (fragment == null) {
                 activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.mapPlaylistFragment, MAP_PLAY_LIST_TAG).commit()
-            }else if (fragment.isHidden){
+            } else if (fragment.isHidden) {
                 activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.mapPlaylistFragment, MAP_PLAY_LIST_TAG).commit()
             }
         }
@@ -97,11 +97,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         super.onDetach()
     }
 
-    private fun requestUserPermissions(){
+    private fun requestUserPermissions() {
         if (ActivityCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity as Activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_ID_MULTIPLE_PERMISSIONS)
-        }else{
+        } else {
             this.mLocationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             this.mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000L, 1f, this)
             this.mGeocoder = Geocoder(activity?.applicationContext, Locale.getDefault())
@@ -110,7 +110,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode){
+        when (requestCode) {
             this.REQUEST_ID_MULTIPLE_PERMISSIONS -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.d("Permission: ", "Permission has been denied by user")
@@ -123,7 +123,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         }
     }
 
-    private fun configMap(){
+    private fun configMap() {
         this.mapView.onCreate(null)
         this.mapView.onResume()
         this.mapView.getMapAsync(this)
@@ -133,7 +133,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         this.mMap = googleMap
         try {
             this.mMap.isMyLocationEnabled = true
-        }catch (e: SecurityException){
+        } catch (e: SecurityException) {
             Log.d("Permission: ", "negando permissão")
         }
     }
