@@ -21,12 +21,12 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var homeFragment: HomeFragment
     private lateinit var pastWorkoutsFragment: PastWorkoutsFragment
     private lateinit var CLIENT_ID: String
     private lateinit var userToken: String
+    private lateinit var userId: String
 
     val AUTH_TOKEN_REQUEST_CODE = 0x10
 
@@ -40,10 +40,10 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Get info from strings
         CLIENT_ID = getString(R.string.spotify_client_id)
-
         userToken = intent.getStringExtra("ACCESS_TOKEN")
+
+        // mount user profile
         getUserProfile()
-        //var playerConfig = Config(this, userToken, CLIENT_ID)
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, app_toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -51,12 +51,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-
-        this.homeFragment = HomeFragment()
-        this.pastWorkoutsFragment = PastWorkoutsFragment()
-
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.homeFragment, HOME_FRAGMENT_TAG).commit()
-
     }
 
     override fun onBackPressed() {
@@ -123,9 +117,19 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val displayName = jsonObject.getString(SPOTIFY_JSON_KEY_DISPLAY_NAME)
                     val imageURL = jsonObject.getJSONArray(SPOTIFY_JSON_KEY_IMAGES).getJSONObject(0).getString(SPOTIFY_JSON_KEY_IMAGE_URL)
                     val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
-                    val id = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
+                    userId = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
 
-                    Log.d("USER_INFOS", "$displayName $imageURL $email $id")
+                    Log.d("USER_INFOS", "$displayName $imageURL $email $userId")
+
+                    val bundle = Bundle()
+                    bundle.putString("userToken", userToken)
+                    bundle.putString("userId", userId)
+
+                    homeFragment = HomeFragment()
+                    homeFragment.arguments = bundle
+
+                    pastWorkoutsFragment = PastWorkoutsFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, homeFragment, HOME_FRAGMENT_TAG).commit()
 
                     // UI changes have to be done into UI Thread
                     runOnUiThread {
@@ -150,7 +154,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         })
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)

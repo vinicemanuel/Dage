@@ -28,7 +28,6 @@ import java.util.*
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
-
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
 
     private lateinit var mMap: GoogleMap
@@ -39,6 +38,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var gpsCoordinates: TextView
     private lateinit var userLocation: TextView
     private lateinit var initButton: FloatingActionButton
+    private lateinit var userToken: String
+    private lateinit var userId: String
 
     private lateinit var mapPlaylistFragment: MapPlaylistFragment
 
@@ -65,6 +66,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        // get token from bundle
+        this.userToken = arguments!!.getString("userToken")
+        this.userId = arguments!!.getString("userId")
+
         // Inflate the layout for this fragment
         this.myView = inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -74,6 +79,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         this.initButton = this.myView.playButton
 
         this.mapPlaylistFragment = MapPlaylistFragment()
+        val bundle = Bundle()
+        bundle.putString("userToken", userToken)
+        bundle.putString("userId", userId)
+        mapPlaylistFragment.arguments = bundle
 
         this.initButton.setOnClickListener {
             val fragment = fragmentManager!!.findFragmentByTag(MAP_PLAY_LIST_TAG)
