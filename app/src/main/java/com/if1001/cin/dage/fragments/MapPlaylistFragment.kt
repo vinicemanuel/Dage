@@ -49,7 +49,7 @@ class MapPlaylistFragment : Fragment() {
         // Inflate the layout for this fragment
         this.myView = inflater.inflate(R.layout.fragment_map_playlist, container, false)
         this.recyclerView = this.myView.recycle_view_playlist
-        this.playlists = listOf(PlayList("list 1"), PlayList("list 2"), PlayList("list 3"))
+        this.playlists = listOf(PlayList("list 1", "1"), PlayList("list 2", "2"), PlayList("list 3", "3"))
 
         this.recyclerView.adapter = PlayListsAdapter(this.playlists,this.activity!!)
         val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
