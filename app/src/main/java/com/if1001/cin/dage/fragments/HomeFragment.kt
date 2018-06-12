@@ -17,9 +17,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.if1001.cin.dage.MAP_PLAY_LIST_TAG
 import com.if1001.cin.dage.R
 import com.if1001.cin.dage.format
@@ -30,7 +33,7 @@ import java.util.*
 class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
 
-    private lateinit var mMap: GoogleMap
+    private var mMap: GoogleMap? = null
     private lateinit var mLocationManager: LocationManager
     private lateinit var mGeocoder: Geocoder
     private lateinit var myView: View
@@ -44,6 +47,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var mapPlaylistFragment: MapPlaylistFragment
 
     override fun onLocationChanged(location: Location) {
+
+        val myPlace = LatLng(location.latitude, location.longitude)
+
+        this.mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPlace, 18.0f))
+
         Log.d("location: ", "update location " + location.toString())
         val cord = "(${location.latitude.format(2)}, ${location.longitude.format(2)})"
         this.gpsCoordinates.text = cord
@@ -141,7 +149,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
     override fun onMapReady(googleMap: GoogleMap) {
         this.mMap = googleMap
         try {
-            this.mMap.isMyLocationEnabled = true
+            this.mMap?.isMyLocationEnabled = true
         } catch (e: SecurityException) {
             Log.d("Permission: ", "negando permissão")
         }

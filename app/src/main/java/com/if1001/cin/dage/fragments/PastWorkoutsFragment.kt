@@ -30,7 +30,7 @@ class PastWorkoutsFragment : Fragment() {
         this.myView = inflater.inflate(R.layout.fragment_past_workouts, container, false)
         this.recyclerView = this.myView.past_workouts_recycleView
 
-        this.workouts = listOf(Workout("local 1"), Workout("local 2"), Workout("local 3"))
+        this.workouts = listOf(Workout("local 1", listOf(), "1"), Workout("local 2", listOf(), "2"), Workout("local 3", listOf(), "3"))
 
         this.recyclerView.adapter = PastWorkoutsAdapter(this.workouts, this.activity!!)
         val layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
