@@ -4,13 +4,16 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
+import com.if1001.cin.dage.DAO.PlayListDao
 import com.if1001.cin.dage.DAO.UserDao
+import com.if1001.cin.dage.model.PlayList
 import com.if1001.cin.dage.model.User
 
-@Database(entities = [(User::class)], version = 1, exportSchema = false)
+@Database(entities = [(User::class), (PlayList::class)], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun UserDao(): UserDao
+    abstract fun PlayListDao(): PlayListDao
 
     companion object {
         private var instance: AppDatabase? = null
