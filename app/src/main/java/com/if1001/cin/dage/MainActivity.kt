@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
 
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request)
         })
+
+        val db = AppDatabase.getInstance(applicationContext)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {

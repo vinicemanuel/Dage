@@ -12,6 +12,6 @@ const val WORKOUT_ROUTE = "route"
 
 @Entity(tableName = WORKOUT_TABLE_NAME)
 data class Workout(@ColumnInfo(name = WORKOUT_NAME_ROW) var locationName: String,
-                   var route: List<PointF>,
+                   @ColumnInfo(name = WORKOUT_ROUTE) var route: List<PointF>,
                    @ColumnInfo(name = WORKOUT_ID_ROW) @PrimaryKey var id: String) {
 }

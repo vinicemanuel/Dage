@@ -119,6 +119,8 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
                     userId = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
 
+
+
                     Log.d("USER_INFOS", "$displayName $imageURL $email $userId")
 
                     val bundle = Bundle()

@@ -9,7 +9,7 @@ interface PlayListDao {
     fun findPlayLists(): List<PlayList>
 
     @Query("select * from $PLAYLIST_TABLE_NAME where $PLAYLIST_ID_ROW = :id")
-    fun findPlayListByID(id: String)
+    fun findPlayListByID(id: String) :PlayList
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPlayList(playList: PlayList)

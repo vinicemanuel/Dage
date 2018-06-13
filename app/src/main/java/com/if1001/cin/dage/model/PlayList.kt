@@ -4,7 +4,7 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
-const val PLAYLIST_TABLE_NAME = "user"
+const val PLAYLIST_TABLE_NAME = "playlist"
 const val PLAYLIST_NAME_ROW = "name"
 const val PLAYLIST_ID_ROW = "id"
 
