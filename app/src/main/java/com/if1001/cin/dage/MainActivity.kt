@@ -13,6 +13,7 @@ import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE = 1337
@@ -43,7 +44,10 @@ class MainActivity : AppCompatActivity() {
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request)
         })
 
-        val db = AppDatabase.getInstance(applicationContext)
+        val user = AppDatabase.getInstance(applicationContext).UserDao().findUSer()
+        if (user != null){
+            Log.d("user_saved", "${user.name} ${user.email}")
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {

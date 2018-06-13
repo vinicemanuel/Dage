@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import com.if1001.cin.dage.fragments.HomeFragment
 import com.if1001.cin.dage.fragments.PastWorkoutsFragment
+import com.if1001.cin.dage.model.User
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_menu.*
@@ -26,7 +27,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var pastWorkoutsFragment: PastWorkoutsFragment
     private lateinit var CLIENT_ID: String
     private lateinit var userToken: String
-    private lateinit var userId: String
 
     val AUTH_TOKEN_REQUEST_CODE = 0x10
 
@@ -117,9 +117,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val displayName = jsonObject.getString(SPOTIFY_JSON_KEY_DISPLAY_NAME)
                     val imageURL = jsonObject.getJSONArray(SPOTIFY_JSON_KEY_IMAGES).getJSONObject(0).getString(SPOTIFY_JSON_KEY_IMAGE_URL)
                     val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
-                    userId = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
+                    val userId = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
 
+                    val user = User(imageURL,displayName,email,userId)
 
+                    AppDatabase.getInstance(applicationContext).UserDao().insertUser(user)
 
                     Log.d("USER_INFOS", "$displayName $imageURL $email $userId")
 
