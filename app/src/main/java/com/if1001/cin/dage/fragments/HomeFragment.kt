@@ -22,16 +22,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.if1001.cin.dage.MAP_PLAY_LIST_TAG
 import com.if1001.cin.dage.R
+import com.if1001.cin.dage.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.if1001.cin.dage.format
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.util.*
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
-    val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
 
     private var mMap: GoogleMap? = null
     private lateinit var mLocationManager: LocationManager
@@ -128,7 +127,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
-            this.REQUEST_ID_MULTIPLE_PERMISSIONS -> {
+            REQUEST_ID_MULTIPLE_PERMISSIONS -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.d("Permission: ", "Permission has been denied by user")
                     this.requestUserPermissions()
