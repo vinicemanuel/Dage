@@ -149,6 +149,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         this.mMap = googleMap
         try {
             this.mMap?.isMyLocationEnabled = true
+            this.mMap?.uiSettings?.isZoomGesturesEnabled = false
         } catch (e: SecurityException) {
             Log.d("Permission: ", "negando permissão")
         }
