@@ -57,7 +57,7 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener {
             Log.d("Permission: ", "negando permissão")
         }
     }
-
+git
     override fun onLocationChanged(location: Location) {
         val myPlace = LatLng(location.latitude, location.longitude)
 
