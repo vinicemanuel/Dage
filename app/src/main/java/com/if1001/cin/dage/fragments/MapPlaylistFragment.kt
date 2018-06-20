@@ -93,6 +93,7 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
                               savedInstanceState: Bundle?): View? {
 
         // get token from bundle
+        //TODO: me esplica isso aqui depois @santojon
         this.userToken = arguments!!.getString("userToken")
         this.userId = arguments!!.getString("userId")
 
