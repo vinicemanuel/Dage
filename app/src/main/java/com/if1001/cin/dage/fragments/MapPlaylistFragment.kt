@@ -32,6 +32,8 @@ import org.json.JSONObject
 import java.io.IOException
 import java.util.*
 import com.if1001.cin.dage.REQUEST_ID_MULTIPLE_PERMISSIONS
+import org.json.JSONArray
+import kotlin.collections.ArrayList
 
 
 class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener {
@@ -57,7 +59,7 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener {
             Log.d("Permission: ", "negando permissão")
         }
     }
-git
+
     override fun onLocationChanged(location: Location) {
         val myPlace = LatLng(location.latitude, location.longitude)
 
@@ -81,17 +83,17 @@ git
         this.userToken = arguments!!.getString("userToken")
         this.userId = arguments!!.getString("userId")
 
-        // get playlists from Spotify
-        getSpotifyPlaylists()
-
         // Inflate the layout for this fragment
         this.myView = inflater.inflate(R.layout.fragment_map_playlist, container, false)
         this.recyclerView = this.myView.recycle_view_playlist
-        this.playlists = listOf(PlayList("list 1", "1"), PlayList("list 2", "2"), PlayList("list 3", "3"))
 
-        this.recyclerView.adapter = PlayListsAdapter(this.playlists,this.activity!!)
         val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         this.recyclerView.layoutManager = layoutManager
+
+        // get playlists from Spotify
+        this.playlists = ArrayList()
+        this.recyclerView.adapter = PlayListsAdapter(this.playlists, this.activity!!)
+        getSpotifyPlaylists(this.playlists, this.recyclerView.adapter)
 
         this.mapView = this.myView.mapViewPlayList
 
@@ -118,7 +120,7 @@ git
         this.mapView.getMapAsync(this)
     }
 
-    fun getSpotifyPlaylists() {
+    private fun getSpotifyPlaylists(screenPlaylists: List<PlayList>, adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
         val request = Request.Builder()
                 .url("https://api.spotify.com/v1/users/$userId/playlists")
                 .addHeader("Authorization", "Bearer $userToken")
@@ -139,6 +141,19 @@ git
 
                     // TODO criar objetos do tipo PLAYLIST com os dados
                     Log.d("Response", jsonObject.toString())
+                    var playlists: JSONArray = jsonObject.getJSONArray("items")
+
+                    for (i in 0..(playlists.length() - 1)) {
+                        val p = playlists.getJSONObject(i)
+
+                        var playlist = PlayList(p.getString("name"), p.getString("id"))
+                        (screenPlaylists as ArrayList<PlayList>).add(playlist)
+                    }
+
+                    // A atualização da tela precisa ser feita na thread de UI
+                    activity!!.runOnUiThread {
+                        (adapter as PlayListsAdapter).notifyDataSetChanged()
+                    }
                 } catch (e: JSONException) {
                     Log.d("Request", "Failed to parse data: $e")
                 }

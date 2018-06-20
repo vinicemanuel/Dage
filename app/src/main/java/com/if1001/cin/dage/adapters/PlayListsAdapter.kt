@@ -33,6 +33,7 @@ class PlayListsAdapter (private val playLists: List<PlayList>, private val act: 
     }
 
     override fun onBindViewHolder(holder: PlayListsHolder, position: Int) {
-        holder.playListName.text = "$position"
+        holder.playListName.text = playLists[position].PlayListName
+        holder.playListdesc.text = playLists[position].PlayListName
     }
 }
