@@ -21,7 +21,6 @@ class PlayingFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_playing, container, false)
     }
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }

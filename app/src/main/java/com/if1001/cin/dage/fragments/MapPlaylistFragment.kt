@@ -50,9 +50,17 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
     private lateinit var mapView: MapView
     private val mOkHttpClient = OkHttpClient()
     private var mCall: Call? = null
+    private lateinit var playingFragment: PlayingFragment
 
     override fun onItemClicked(item: PlayList) {
         Log.d("click", "${item.PlayListName}")
+
+        val fragment = fragmentManager!!.findFragmentByTag(PLAYING_SONG_FRAGMENT_TAG)
+        if (fragment == null) {
+            activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.playingFragment, PLAYING_SONG_FRAGMENT_TAG).commit()
+        } else if (fragment.isHidden) {
+            activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.playingFragment, PLAYING_SONG_FRAGMENT_TAG).commit()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -103,6 +111,8 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
         this.mapView = this.myView.mapViewPlayList
 
         this.requestUserPermissions()
+
+        this.playingFragment = PlayingFragment()
 
         return this.myView
     }
