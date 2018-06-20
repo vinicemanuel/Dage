@@ -76,11 +76,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_past -> {
-                val fragment = fragmentManager.findFragmentByTag(PAST_WORKOUTS_TAG)
+                val fragment = fragmentManager.findFragmentByTag(PAST_WORKOUTS_FRAGMENT_TAG)
                 if (fragment == null) {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.pastWorkoutsFragment, PAST_WORKOUTS_TAG).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.pastWorkoutsFragment, PAST_WORKOUTS_FRAGMENT_TAG).commit()
                 } else if (fragment.isHidden) {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.pastWorkoutsFragment, PAST_WORKOUTS_TAG).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.pastWorkoutsFragment, PAST_WORKOUTS_FRAGMENT_TAG).commit()
                 }
             }
         }

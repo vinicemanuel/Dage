@@ -22,7 +22,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.if1001.cin.dage.MAP_PLAY_LIST_TAG
+import com.if1001.cin.dage.MAP_PLAY_LIST_FRAGMENT_TAG
 import com.if1001.cin.dage.R
 import com.if1001.cin.dage.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.if1001.cin.dage.format
@@ -92,11 +92,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         mapPlaylistFragment.arguments = bundle
 
         this.initButton.setOnClickListener {
-            val fragment = fragmentManager!!.findFragmentByTag(MAP_PLAY_LIST_TAG)
+            val fragment = fragmentManager!!.findFragmentByTag(MAP_PLAY_LIST_FRAGMENT_TAG)
             if (fragment == null) {
-                activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.mapPlaylistFragment, MAP_PLAY_LIST_TAG).commit()
+                activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.mapPlaylistFragment, MAP_PLAY_LIST_FRAGMENT_TAG).commit()
             } else if (fragment.isHidden) {
-                activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.mapPlaylistFragment, MAP_PLAY_LIST_TAG).commit()
+                activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.mapPlaylistFragment, MAP_PLAY_LIST_FRAGMENT_TAG).commit()
             }
         }
 

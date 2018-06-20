@@ -34,9 +34,10 @@ import java.util.*
 import com.if1001.cin.dage.REQUEST_ID_MULTIPLE_PERMISSIONS
 import org.json.JSONArray
 import kotlin.collections.ArrayList
+import com.if1001.cin.dage.adapters.ContentListenerPlayList
 
 
-class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener {
+class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, ContentListenerPlayList {
 
     private lateinit var myView: View
     private lateinit var recyclerView: RecyclerView
@@ -49,6 +50,10 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var mapView: MapView
     private val mOkHttpClient = OkHttpClient()
     private var mCall: Call? = null
+
+    override fun onItemClicked(item: PlayList) {
+        Log.d("click", "${item.PlayListName}")
+    }
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.mMap = googleMap
@@ -92,7 +97,7 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
         // get playlists from Spotify
         this.playlists = ArrayList()
-        this.recyclerView.adapter = PlayListsAdapter(this.playlists, this.activity!!)
+        this.recyclerView.adapter = PlayListsAdapter(this.playlists, this.activity!!, this)
         getSpotifyPlaylists(this.playlists, this.recyclerView.adapter)
 
         this.mapView = this.myView.mapViewPlayList
