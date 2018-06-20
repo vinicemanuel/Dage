@@ -10,9 +10,9 @@ import com.if1001.cin.dage.R
 import com.if1001.cin.dage.model.PlayList
 import kotlinx.android.synthetic.main.cell_play_lists.view.*
 
-class PlayListsAdapter (private val playLists: List<PlayList>, private val act: Activity): RecyclerView.Adapter<PlayListsAdapter.PlayListsHolder>() {
+class PlayListsAdapter(private val playLists: List<PlayList>, private val act: Activity) : RecyclerView.Adapter<PlayListsAdapter.PlayListsHolder>() {
 
-    class PlayListsHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class PlayListsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var playListName: TextView
         lateinit var playListdesc: TextView
         lateinit var plalistImage: ImageView

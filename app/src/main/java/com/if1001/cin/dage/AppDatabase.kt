@@ -12,7 +12,7 @@ import com.if1001.cin.dage.model.User
 import com.if1001.cin.dage.model.Workout
 
 @Database(entities = [(User::class), (PlayList::class), (Workout::class)], version = 1, exportSchema = false)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun UserDao(): UserDao
     abstract fun PlayListDao(): PlayListDao
@@ -21,10 +21,10 @@ abstract class AppDatabase: RoomDatabase() {
     companion object {
         private var instance: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase{
-            return if (instance != null){
+        fun getInstance(context: Context): AppDatabase {
+            return if (instance != null) {
                 instance!!
-            }else{
+            } else {
                 instance = Room.databaseBuilder(context, AppDatabase::class.java, "db-name").allowMainThreadQueries().build()
 
                 return instance!!

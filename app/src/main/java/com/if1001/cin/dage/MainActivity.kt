@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         val user = AppDatabase.getInstance(applicationContext).UserDao().findUSer()
-        if (user != null){
+        if (user != null) {
             Log.d("user_saved", "${user.name} ${user.email}")
         }
     }

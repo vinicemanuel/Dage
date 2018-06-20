@@ -119,7 +119,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
                     val userId = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
 
-                    val user = User(imageURL,displayName,email,userId)
+                    val user = User(imageURL, displayName, email, userId)
 
                     AppDatabase.getInstance(applicationContext).UserDao().insertUser(user)
 
