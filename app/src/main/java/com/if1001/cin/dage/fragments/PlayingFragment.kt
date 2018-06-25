@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.PointF
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
@@ -37,6 +38,8 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var mLocationManager: LocationManager
     private lateinit var mGeocoder: Geocoder
     private lateinit var mapView: MapView
+    private lateinit var route: MutableList<PointF>
+    private var enableTracking = false
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.mMap = googleMap
@@ -54,6 +57,11 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
         this.mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(myPlace, 18.0f))
 
         Log.d("location: ", "update location " + location.toString())
+
+        if (enableTracking == true){
+            this.route.add(PointF(location.latitude.toFloat(), location.longitude.toFloat()))
+            Log.d("save_pint","${this.route}")
+        }
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -76,6 +84,13 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
         this.mapView = this.myView.mapView_music_list
 
         this.requestUserPermissions()
+
+        this.route = mutableListOf()
+
+        this.myView.play_button.setOnClickListener {
+            Log.d("play", "play clicked")
+            this.enableTracking = true
+        }
 
         return this.myView
     }
