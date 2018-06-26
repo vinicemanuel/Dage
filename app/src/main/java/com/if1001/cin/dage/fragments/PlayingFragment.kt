@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.PointF
 import android.location.Geocoder
 import android.location.Location
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.PolylineOptions
 import com.if1001.cin.dage.R
 import com.if1001.cin.dage.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.if1001.cin.dage.model.PlayList
@@ -40,6 +42,7 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var mapView: MapView
     private lateinit var route: MutableList<PointF>
     private var enableTracking = false
+    private lateinit var routeLine: PolylineOptions
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.mMap = googleMap
@@ -58,9 +61,11 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
         Log.d("location: ", "update location " + location.toString())
 
-        if (enableTracking == true){
+        if (enableTracking){
             this.route.add(PointF(location.latitude.toFloat(), location.longitude.toFloat()))
             Log.d("save_pint","${this.route}")
+            this.routeLine.add(myPlace).width(5.0f).color(Color.BLACK)
+            this.mMap?.addPolyline(this.routeLine)
         }
     }
 
@@ -87,12 +92,24 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
         this.route = mutableListOf()
 
+        this.routeLine = PolylineOptions()
+
         this.myView.play_button.setOnClickListener {
             Log.d("play", "play clicked")
-            this.enableTracking = true
+
+            if (!enableTracking){
+                enableTracking = true
+            }else{
+                enableTracking = false
+                this.saveInstance()
+            }
         }
 
         return this.myView
+    }
+
+    private fun saveInstance(){
+
     }
 
     private fun requestUserPermissions() {
