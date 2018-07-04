@@ -150,7 +150,6 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
     }
 
     override fun onDetach() {
-        this.saveInstance()
         super.onDetach()
     }
 }

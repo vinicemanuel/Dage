@@ -11,7 +11,7 @@ const val WORKOUT_TABLE_NAME = "workout"
 const val WORKOUT_NAME_ROW = "name"
 const val WORKOUT_ID_ROW = "id"
 const val WORKOUT_ROUTE_ROW = "route"
-const val WORKOUT_ROUTE_PLAY_LIST_NAME_ROW = "route"
+const val WORKOUT_ROUTE_PLAY_LIST_NAME_ROW = "playListName"
 
 @Entity(tableName = WORKOUT_TABLE_NAME)
 data class Workout(@ColumnInfo(name = WORKOUT_NAME_ROW) var locationName: String,

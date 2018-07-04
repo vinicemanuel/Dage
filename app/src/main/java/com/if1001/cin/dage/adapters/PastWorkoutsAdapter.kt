@@ -40,5 +40,6 @@ class PastWorkoutsAdapter (private val workouts: List<Workout>, private val act:
     override fun onBindViewHolder(holder: PastWorkoutsHolder, position: Int) {
 //        holder.textLocation.text = "$position"
         holder.textLocation.text = this.workouts[position].locationName
+        holder.textPlayListName.text = this.workouts[position].playListName
     }
 }
