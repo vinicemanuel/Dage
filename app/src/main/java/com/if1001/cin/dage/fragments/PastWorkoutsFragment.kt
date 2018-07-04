@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.if1001.cin.dage.AppDatabase
 import com.if1001.cin.dage.R
 import com.if1001.cin.dage.model.Workout
 import com.if1001.cin.dage.adapters.PastWorkoutsAdapter
@@ -18,7 +20,7 @@ class PastWorkoutsFragment : Fragment() {
 
     private lateinit var myView: View
     private lateinit var recyclerView: RecyclerView
-    private lateinit var workouts: List<Workout>
+    private var workouts: List<Workout> = listOf<Workout>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,19 +30,25 @@ class PastWorkoutsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         this.myView = inflater.inflate(R.layout.fragment_past_workouts, container, false)
-        this.recyclerView = this.myView.past_workouts_recycleView
 
-        this.workouts = listOf(Workout("local 1", "", "1"))
+        this.workouts = AppDatabase.getInstance(context!!).WorkoutDao().findWorkots()
 
-        this.recyclerView.adapter = PastWorkoutsAdapter(this.workouts, this.activity!!)
-        val layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
-        this.recyclerView.layoutManager = layoutManager
+        Log.d("saved Workouts:", "${this.workouts.size}")
+
+        this.loadRecycle()
 
         return this.myView
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+    }
+
+    fun loadRecycle(){
+        this.recyclerView = this.myView.past_workouts_recycleView
+        this.recyclerView.adapter = PastWorkoutsAdapter(this.workouts, this.activity!!)
+        val layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
+        this.recyclerView.layoutManager = layoutManager
     }
 
     override fun onDetach() {

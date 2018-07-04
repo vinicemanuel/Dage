@@ -56,6 +56,7 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
         Log.d("click", "${item.PlayListName}")
 
         val fragment = fragmentManager!!.findFragmentByTag(PLAYING_SONG_FRAGMENT_TAG)
+        this.playingFragment.playListPlaingName = item.PlayListName
         if (fragment == null) {
             activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.playingFragment, PLAYING_SONG_FRAGMENT_TAG).commit()
         } else if (fragment.isHidden) {

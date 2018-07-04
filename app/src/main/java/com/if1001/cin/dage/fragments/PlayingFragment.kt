@@ -25,9 +25,12 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
+import com.if1001.cin.dage.AppDatabase
+import com.if1001.cin.dage.ListPointConverter
 import com.if1001.cin.dage.R
 import com.if1001.cin.dage.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.if1001.cin.dage.model.PlayList
+import com.if1001.cin.dage.model.Workout
 import kotlinx.android.synthetic.main.fragment_playing.view.*
 import java.util.*
 
@@ -43,12 +46,14 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var route: MutableList<PointF>
     private var enableTracking = false
     private lateinit var routeLine: PolylineOptions
+    private var locationName: String = "mei da rua"
+    lateinit var playListPlaingName: String
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.mMap = googleMap
         try {
             this.mMap?.isMyLocationEnabled = true
-            this.mMap?.uiSettings?.isZoomGesturesEnabled = false
+//            this.mMap?.uiSettings?.isZoomGesturesEnabled = false
         } catch (e: SecurityException) {
             Log.d("Permission: ", "negando permissão")
         }
@@ -67,6 +72,13 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
             this.routeLine.add(myPlace).width(5.0f).color(Color.BLACK)
             this.mMap?.addPolyline(this.routeLine)
         }
+
+        val addresses = this.mGeocoder.getFromLocation(location.latitude, location.longitude, 1)
+
+        val city = addresses[0].locality
+        val address = addresses[0].getAddressLine(0)
+        val fullAddress = "$city, $address"
+        this.locationName = fullAddress
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -99,8 +111,10 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
             if (!enableTracking){
                 enableTracking = true
+                this.myView.play_button.text = "stop"
             }else{
                 enableTracking = false
+                this.myView.play_button.text = "play"
                 this.saveInstance()
             }
         }
@@ -109,7 +123,8 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
     }
 
     private fun saveInstance(){
-
+        var workout = Workout(this.locationName, ListPointConverter().routeListToGson(this.route), playListPlaingName)
+        AppDatabase.getInstance(context!!).WorkoutDao().insertWorkout(workout)
     }
 
     private fun requestUserPermissions() {
@@ -135,6 +150,7 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener {
     }
 
     override fun onDetach() {
+        this.saveInstance()
         super.onDetach()
     }
 }
