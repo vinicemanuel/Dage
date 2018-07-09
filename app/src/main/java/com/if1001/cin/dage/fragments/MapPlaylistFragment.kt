@@ -22,23 +22,22 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.if1001.cin.dage.*
-import com.if1001.cin.dage.model.PlayList
+import com.if1001.cin.dage.PLAYING_SONG_FRAGMENT_TAG
+import com.if1001.cin.dage.R
+import com.if1001.cin.dage.REQUEST_ID_MULTIPLE_PERMISSIONS
+import com.if1001.cin.dage.adapters.ContentListenerPlayList
 import com.if1001.cin.dage.adapters.PlayListsAdapter
+import com.if1001.cin.dage.model.PlayList
 import kotlinx.android.synthetic.main.fragment_map_playlist.view.*
 import okhttp3.*
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.util.*
-import com.if1001.cin.dage.REQUEST_ID_MULTIPLE_PERMISSIONS
-import org.json.JSONArray
 import kotlin.collections.ArrayList
-import com.if1001.cin.dage.adapters.ContentListenerPlayList
-
 
 class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, ContentListenerPlayList {
-
     private lateinit var myView: View
     private lateinit var recyclerView: RecyclerView
     private lateinit var playlists: List<PlayList>
@@ -57,6 +56,7 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
 
         val fragment = fragmentManager!!.findFragmentByTag(PLAYING_SONG_FRAGMENT_TAG)
         this.playingFragment.playListPlaingName = item.PlayListName
+        this.playingFragment.playList = item
         if (fragment == null) {
             activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.playingFragment, PLAYING_SONG_FRAGMENT_TAG).commit()
         } else if (fragment.isHidden) {
@@ -114,7 +114,11 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
 
         this.requestUserPermissions()
 
+        val bundle = Bundle()
+        bundle.putString("userId", userId)
+        bundle.putString("userToken", userToken)
         this.playingFragment = PlayingFragment()
+        this.playingFragment.arguments = bundle
 
         return this.myView
     }
@@ -163,7 +167,17 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
                     for (i in 0..(playlists.length() - 1)) {
                         val p = playlists.getJSONObject(i)
 
-                        var playlist = PlayList(p.getString("name"), p.getString("id"))
+                        var displayName = p.getJSONObject("owner").getString("display_name").trim()
+                        if (displayName == "null") {
+                            displayName = "Desconhecido"
+                        }
+
+                        var playlist = PlayList(
+                                p.getString("name"),
+                                "por ${displayName}",
+                                (p.getJSONArray("images").get(0) as JSONObject).getString("url"),
+                                p.getString("id")
+                        )
                         (screenPlaylists as ArrayList<PlayList>).add(playlist)
                     }
 
@@ -180,13 +194,5 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
 
     private fun cancelCall() {
         mCall?.cancel()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
     }
 }

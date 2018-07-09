@@ -1,59 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.MapPlaylistFragment">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".fragments.MapPlaylistFragment"
+>
 
     <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView_music_list"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Musicas: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapView_music_list" />
+            android:id="@+id/mapView_music_list"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycle_music_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            android:id="@+id/recycle_music_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/view2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/playlist_playing"/>
 
     <View
-        android:id="@+id/view2"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycle_music_list" />
+            android:id="@+id/view2"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycle_music_list" android:background="@color/colorPrimary"/>
 
-    <Button
-        android:id="@+id/play_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="play"
-        app:layout_constraintBottom_toBottomOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintStart_toStartOf="@+id/view2"
-        app:layout_constraintTop_toTopOf="@+id/view2" />
+    <View
+            android:id="@+id/view3"
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/recycle_music_list"
+            app:layout_constraintTop_toBottomOf="@+id/mapView_music_list"
+            app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toStartOf="@+id/mapView_music_list"
+            app:layout_constraintEnd_toEndOf="@+id/mapView_music_list"/>
+
+    <TextView
+            android:id="@+id/playlist_playing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Now Playing:"
+            app:layout_constraintBottom_toTopOf="@+id/recycle_music_list"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mapView_music_list" android:textStyle="bold"
+            android:textSize="18sp" android:layout_marginTop="8dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"/>
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/play_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/colorAccent"
+            android:src="@android:drawable/ic_media_play"
+            app:layout_constraintBottom_toBottomOf="@+id/view2"
+            app:layout_constraintEnd_toEndOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="@+id/view2"
+            app:layout_constraintTop_toTopOf="@+id/view2"/>
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/back_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/colorAccent"
+            android:src="@android:drawable/ic_media_previous"
+            app:layout_constraintBottom_toBottomOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="@+id/view2"
+            app:layout_constraintTop_toTopOf="@+id/view2"
+            app:layout_constraintEnd_toStartOf="@+id/play_button" android:layout_marginEnd="15dp"/>
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/ff_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/colorAccent"
+            android:src="@android:drawable/ic_media_next"
+            app:layout_constraintBottom_toBottomOf="@+id/view2"
+            app:layout_constraintTop_toTopOf="@+id/view2"
+            app:layout_constraintStart_toEndOf="@+id/play_button"
+            android:layout_marginStart="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/view2"/>
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/end_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/colorAccent"
+            android:src="@android:drawable/ic_menu_save"
+            app:layout_constraintStart_toStartOf="@+id/mapView_music_list"
+            app:layout_constraintEnd_toEndOf="@+id/mapView_music_list"
+            app:layout_constraintHorizontal_bias="0.95" app:layout_constraintBottom_toBottomOf="@+id/mapView_music_list"
+            app:layout_constraintTop_toTopOf="@+id/mapView_music_list"
+            app:layout_constraintVertical_bias="0.95"/>
 </android.support.constraint.ConstraintLayout>

@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.if1001.cin.dage.AppDatabase
 import com.if1001.cin.dage.R
-import com.if1001.cin.dage.model.Workout
 import com.if1001.cin.dage.adapters.PastWorkoutsAdapter
+import com.if1001.cin.dage.model.Workout
 import kotlinx.android.synthetic.main.fragment_past_workouts.view.*
 
 
