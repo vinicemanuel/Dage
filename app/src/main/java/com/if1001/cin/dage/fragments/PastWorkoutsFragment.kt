@@ -1,6 +1,5 @@
 package com.if1001.cin.dage.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
@@ -22,26 +21,18 @@ class PastWorkoutsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private var workouts: List<Workout> = listOf<Workout>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         this.myView = inflater.inflate(R.layout.fragment_past_workouts, container, false)
 
-        this.workouts = AppDatabase.getInstance(context!!).WorkoutDao().findWorkots()
+        this.workouts = AppDatabase.getInstance(context!!).WorkoutDao().findWorkots().asReversed()
 
         Log.d("saved Workouts:", "${this.workouts.size}")
 
         this.loadRecycle()
 
         return this.myView
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
     }
 
     fun loadRecycle(){
@@ -51,7 +42,4 @@ class PastWorkoutsFragment : Fragment() {
         this.recyclerView.layoutManager = layoutManager
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
 }

@@ -1,5 +1,9 @@
 package com.if1001.cin.dage
 
+import android.graphics.Bitmap
+import android.util.Base64
+import java.io.ByteArrayOutputStream
+
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 
 val HOME_FRAGMENT_TAG = "homeTag"
@@ -14,3 +18,10 @@ val SPOTIFY_JSON_KEY_IMAGE_URL = "url"
 val SPOTIFY_JSON_KEY_ID = "id"
 
 val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
+
+fun BitMapToString(bitmap: Bitmap): String {
+    val baos = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+    val b = baos.toByteArray()
+    return Base64.encodeToString(b, Base64.DEFAULT)
+}

@@ -19,7 +19,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -198,8 +197,6 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
                 enableTracking = false
                 this.myView.play_button.setImageResource(android.R.drawable.ic_media_play)
                 mPlayer!!.pause(null)
-
-                this.saveInstance()
             }
         }
 
@@ -222,8 +219,15 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
 
             this.myView.play_button.setImageResource(android.R.drawable.ic_media_play)
 
-            this.activity!!.runOnUiThread {
-                Toast.makeText(context, "Workout saved!", Toast.LENGTH_LONG)
+            this.mMap!!.snapshot {
+                this.saveInstance(BitMapToString(it))
+
+                val fragment = fragmentManager!!.findFragmentByTag(PAST_WORKOUTS_FRAGMENT_TAG)
+                if (fragment == null) {
+                    activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, PastWorkoutsFragment(), PAST_WORKOUTS_FRAGMENT_TAG).commit()
+                } else if (fragment.isHidden) {
+                    activity!!.supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, fragment, PAST_WORKOUTS_FRAGMENT_TAG).commit()
+                }
             }
         }
 
@@ -232,8 +236,8 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
         return this.myView
     }
 
-    private fun saveInstance() {
-        var workout = Workout(this.locationName, ListPointConverter().routeListToGson(this.route), playListPlaingName)
+    private fun saveInstance(image: String) {
+        var workout = Workout(this.locationName, ListPointConverter().routeListToGson(this.route), playListPlaingName, image)
         AppDatabase.getInstance(context!!).WorkoutDao().insertWorkout(workout)
     }
 
