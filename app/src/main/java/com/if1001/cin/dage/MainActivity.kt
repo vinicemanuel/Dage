@@ -25,27 +25,29 @@ class MainActivity : AppCompatActivity() {
 
         FontAwesome.applyToAllViews(this, findViewById(R.id.button_login_spotify))
 
+        ActivityCompat.requestPermissions(this as Activity, arrayOf(Manifest.permission.INTERNET), 1)
+
+        // Get info from strings
+        CLIENT_ID = getString(R.string.spotify_client_id)
+        REDIRECT_URI = "${getString(R.string.com_spotify_sdk_redirect_scheme)}://${getString(R.string.com_spotify_sdk_redirect_host)}"
+
+        Log.d("ClientId", CLIENT_ID)
+        Log.d("Redirect", REDIRECT_URI)
+        var builder: AuthenticationRequest.Builder =
+                AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
+
+        builder.setScopes(arrayOf("user-read-private", "user-read-email", "playlist-read-private", "streaming"))
+        var request: AuthenticationRequest = builder.build()
+
+        // Clique no 'Login com Spotify'
         button_login_spotify.setOnClickListener(View.OnClickListener {
-            ActivityCompat.requestPermissions(this as Activity, arrayOf(Manifest.permission.INTERNET), 1)
-
-            // Get info from strings
-            CLIENT_ID = getString(R.string.spotify_client_id)
-            REDIRECT_URI = "${getString(R.string.com_spotify_sdk_redirect_scheme)}://${getString(R.string.com_spotify_sdk_redirect_host)}"
-
-            Log.d("ClientId", CLIENT_ID)
-            Log.d("Redirect", REDIRECT_URI)
-            var builder: AuthenticationRequest.Builder =
-                    AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
-
-            builder.setScopes(arrayOf("user-read-private", "user-read-email", "playlist-read-private", "streaming"))
-            var request: AuthenticationRequest = builder.build()
-
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request)
         })
 
         val user = AppDatabase.getInstance(applicationContext).UserDao().findUSer()
         if (user != null) {
             Log.d("user_saved", "${user.name} ${user.email}")
+            AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request)
         }
     }
 

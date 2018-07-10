@@ -5,8 +5,8 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:title="home" />
+                android:id="@+id/nav_home"
+                android:title="Home"/>
         <item
             android:id="@+id/nav_past"
             android:title="Past Workouts"/>
@@ -15,8 +15,8 @@
     <item android:title="">
         <menu>
             <item
-                android:id="@+id/nav_logout"
-                android:title="Logout" />
+                    android:id="@+id/nav_logout"
+                    android:title="Change account"/>
         </menu>
     </item>
 

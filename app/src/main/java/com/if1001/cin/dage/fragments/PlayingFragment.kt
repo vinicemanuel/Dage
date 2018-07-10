@@ -133,10 +133,6 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
     override fun onProviderEnabled(provider: String?) {}
     override fun onProviderDisabled(provider: String?) {}
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     /**
      * Mata o player ao sair da tela
      */
@@ -223,10 +219,12 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
         this.myView.end_btn.setOnClickListener {
             mPlayer!!.shutdown()
             enableTracking = false
-            this.saveInstance()
 
             this.myView.play_button.setImageResource(android.R.drawable.ic_media_play)
-            Toast.makeText(context, "Workout saved!", Toast.LENGTH_LONG)
+
+            this.activity!!.runOnUiThread {
+                Toast.makeText(context, "Workout saved!", Toast.LENGTH_LONG)
+            }
         }
 
         this.myView.playlist_playing.text = "Now playing: ${this.playListPlaingName}"

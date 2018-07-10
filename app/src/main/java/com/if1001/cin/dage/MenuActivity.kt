@@ -14,6 +14,9 @@ import com.if1001.cin.dage.fragments.HomeFragment
 import com.if1001.cin.dage.fragments.PastWorkoutsFragment
 import com.if1001.cin.dage.model.User
 import com.spotify.sdk.android.authentication.AuthenticationClient
+import com.spotify.sdk.android.authentication.AuthenticationRequest
+import com.spotify.sdk.android.authentication.AuthenticationResponse
+import com.spotify.sdk.android.authentication.LoginActivity.REQUEST_CODE
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.nav_header_menu.view.*
@@ -22,10 +25,12 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
+
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var homeFragment: HomeFragment
     private lateinit var pastWorkoutsFragment: PastWorkoutsFragment
     private lateinit var CLIENT_ID: String
+    private lateinit var REDIRECT_URI: String
     private lateinit var userToken: String
 
     val AUTH_TOKEN_REQUEST_CODE = 0x10
@@ -40,6 +45,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Get info from strings
         CLIENT_ID = getString(R.string.spotify_client_id)
+        REDIRECT_URI = "${getString(R.string.com_spotify_sdk_redirect_scheme)}://${getString(R.string.com_spotify_sdk_redirect_host)}"
         userToken = intent.getStringExtra("ACCESS_TOKEN")
 
         // mount user profile
@@ -73,7 +79,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
             R.id.nav_logout -> {
+                val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
+                        .setShowDialog(true)
+                        .setScopes(arrayOf("user-read-private", "user-read-email", "playlist-read-private", "streaming"))
 
+                var request: AuthenticationRequest = builder.build()
+                AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request)
             }
             R.id.nav_past -> {
                 val fragment = fragmentManager.findFragmentByTag(PAST_WORKOUTS_FRAGMENT_TAG)
