@@ -1,5 +1,7 @@
 # Dage
 
+Onde o exercício e a música se fundem.
+
 ## Proposta
 - https://docs.google.com/document/d/1--hoMu2vB_EsYUMzDxLIAHMkMga_m8BR4hY6OLOvTC0/edit#
 
