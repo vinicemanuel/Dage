@@ -113,4 +113,4 @@ Onde:
 - Código zipado: [Download](https://github.com/vinicemanuel/Dage/archive/0.1.zip)
 - APK: [Download](https://github.com/vinicemanuel/Dage/raw/master/app-debug.apk)
 
->*Caso o APK não funcione, sugerimos testar no emulador com google play services e sem o Spotify instalado para testar. Esse problema é decorrente do Fingerprint do Aplicativo no Spotify Developer console, algo que estamos tentando corrigir, mas aparentemente existem issues quanto a isso na biblioteca android fornecida pelo Spotify para a integração.
+>*Caso o APK não funcione, sugerimos instalar no emulador com google play services e sem o Spotify instalado para testar. Esse problema é decorrente do Fingerprint do Aplicativo no Spotify Developer console, algo que estamos tentando corrigir, mas aparentemente existem issues quanto a isso na biblioteca android fornecida pelo Spotify para a integração.
