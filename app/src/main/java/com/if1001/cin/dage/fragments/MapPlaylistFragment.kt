@@ -37,6 +37,9 @@ import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * Fragment do mapa + lista de playlists
+ */
 class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, ContentListenerPlayList {
     private lateinit var myView: View
     private lateinit var recyclerView: RecyclerView
@@ -51,6 +54,9 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
     private var mCall: Call? = null
     private lateinit var playingFragment: PlayingFragment
 
+    /**
+     * Executado no clique (toque) em uma playlist (seleciona a playlist)
+     */
     override fun onItemClicked(item: PlayList) {
         Log.d("click", "${item.PlayListName}")
 
@@ -74,6 +80,9 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
         }
     }
 
+    /**
+     * Tracking de movimentação do mapa
+     */
     override fun onLocationChanged(location: Location) {
         val myPlace = LatLng(location.latitude, location.longitude)
 
@@ -82,19 +91,10 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
         Log.d("location: ", "update location " + location.toString())
     }
 
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-    override fun onProviderEnabled(provider: String?) {}
-    override fun onProviderDisabled(provider: String?) {}
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        // get token from bundle
-        //TODO: me esplica isso aqui depois @santojon
+        // Obtém Tokem passado pelo fragment antecessor
         this.userToken = arguments!!.getString("userToken")
         this.userId = arguments!!.getString("userId")
 
@@ -123,6 +123,9 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
         return this.myView
     }
 
+    /**
+     * Solicita permissão de GPS
+     */
     private fun requestUserPermissions() {
         if (ActivityCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -141,6 +144,9 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
         this.mapView.getMapAsync(this)
     }
 
+    /**
+     * Obtém as playlists do Spotify do usuário logado
+     */
     private fun getSpotifyPlaylists(screenPlaylists: List<PlayList>, adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
         val request = Request.Builder()
                 .url("https://api.spotify.com/v1/users/$userId/playlists")
@@ -160,7 +166,7 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
                 try {
                     val jsonObject = JSONObject(response.body()?.string())
 
-                    // TODO criar objetos do tipo PLAYLIST com os dados
+                    // Criar objetos do tipo PLAYLIST com os dados
                     Log.d("Response", jsonObject.toString())
                     var playlists: JSONArray = jsonObject.getJSONArray("items")
 
@@ -195,4 +201,14 @@ class MapPlaylistFragment : Fragment(), OnMapReadyCallback, LocationListener, Co
     private fun cancelCall() {
         mCall?.cancel()
     }
+
+    /**
+     * Implements necessários mas não usados
+     */
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+
+    override fun onProviderEnabled(provider: String?) {}
+
+    override fun onProviderDisabled(provider: String?) {}
 }

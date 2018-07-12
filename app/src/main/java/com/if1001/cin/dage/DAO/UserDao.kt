@@ -1,8 +1,12 @@
 package com.if1001.cin.dage.DAO
 
 import android.arch.persistence.room.*
-import com.if1001.cin.dage.model.*
+import com.if1001.cin.dage.model.USER_TABLE_NAME
+import com.if1001.cin.dage.model.User
 
+/**
+ * Classe de acesso a dados (BD) de usuário
+ */
 @Dao
 interface UserDao {
     @Query("select * from $USER_TABLE_NAME limit 1")

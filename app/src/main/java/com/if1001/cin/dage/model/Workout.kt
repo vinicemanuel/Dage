@@ -13,6 +13,9 @@ const val WORKOUT_ROUTE_ROW = "route"
 const val WORKOUT_ROUTE_PLAY_LIST_NAME_ROW = "playListName"
 const val WORKOUT_ROUTE_IMAGE_ROW = "image"
 
+/**
+ * Classe de de mapeamento com banco de dados (ORM) de workout
+ */
 @Entity(tableName = WORKOUT_TABLE_NAME)
 data class Workout(@ColumnInfo(name = WORKOUT_NAME_ROW) var locationName: String,
                    @ColumnInfo(name = WORKOUT_ROUTE_ROW) @TypeConverters(ListPointConverter::class) var route: String,
@@ -20,5 +23,6 @@ data class Workout(@ColumnInfo(name = WORKOUT_NAME_ROW) var locationName: String
                    @ColumnInfo(name = WORKOUT_ROUTE_IMAGE_ROW) var image: String) {
 
     @ColumnInfo(name = WORKOUT_ID_ROW)
-    @PrimaryKey(autoGenerate = true) var id: Int = 0
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 }

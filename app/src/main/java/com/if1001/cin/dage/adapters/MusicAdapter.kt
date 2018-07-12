@@ -11,12 +11,14 @@ import com.if1001.cin.dage.model.Music
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.cell_play_lists.view.*
 
-public interface ContentListenerMusic {
+interface ContentListenerMusic {
     fun onItemClicked(item: Music)
 }
 
+/**
+ * Adapter para listagem de músicas em uma playlist
+ */
 class MusicAdapter(private val musics: List<Music>, private val act: Activity, val listener: ContentListenerMusic) : RecyclerView.Adapter<MusicAdapter.MusicHolder>() {
-
     class MusicHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var musicName: TextView
         lateinit var musicDesc: TextView

@@ -56,7 +56,7 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
     private lateinit var route: MutableList<PointF>
     private var enableTracking = false
     private lateinit var routeLine: PolylineOptions
-    private var locationName: String = "mei da rua"
+    private var locationName: String = "Not tracked"
     lateinit var playListPlaingName: String
     lateinit var playList: PlayList
     lateinit var musics: List<Music>
@@ -88,7 +88,6 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
         Log.d("click", "${item.MusicName}")
 
         val fragment = fragmentManager!!.findFragmentByTag(PLAYING_SONG_FRAGMENT_TAG)
-        this.playListPlaingName = item.MusicName
         this.music = item
 
         if (fragment == null) {
@@ -287,7 +286,7 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
                 try {
                     val jsonObject = JSONObject(response.body()?.string())
 
-                    // TODO criar objetos do tipo MUSIC com os dados
+                    // Criar objetos do tipo MUSIC com os dados
                     Log.d("Response", jsonObject.toString())
                     var songs: JSONArray = jsonObject.getJSONArray("items")
 
@@ -331,15 +330,19 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
      */
 
 
+    /**
+     * Escuta eventos durante o playback de músicas
+     */
     override fun onPlaybackEvent(playerEvent: PlayerEvent) {
         Log.d("MainActivity", "Playback event received: " + playerEvent.name)
         when (playerEvent.name) {
-        // Handle event type as necessary
+        // Sempre que a música trocar
             "kSpPlaybackNotifyTrackChanged" -> {
                 this.music = musics.get(lastPosition)
                 this.myView.playlist_playing.text = "Now playing: ${this.musics.get(lastPosition).MusicName}"
                 lastPosition += 1
             }
+        // Quando volta a música o evento de trackchanged é chamado primeiro, então é necessário corrigir a última posição marcada na lista de músicas
             "kSpPlaybackNotifyPrev" -> {
                 if (lastPosition >= 2) {
                     lastPosition -= 2
@@ -352,15 +355,9 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
         }
     }
 
-    override fun onPlaybackError(error: Error) {
-        Log.d("MainActivity", "Playback error received: " + error.name)
-        when (error) {
-        // Handle error type as necessary
-            else -> {
-            }
-        }
-    }
-
+    /**
+     * Roda ao inicializar o objeto 'Player' do Spotify
+     */
     override fun onLoggedIn() {
         Log.d("MainActivity", "User logged in")
 
@@ -372,6 +369,20 @@ class PlayingFragment : Fragment(), OnMapReadyCallback, LocationListener, Player
 
         // track location
         enableTracking = true
+    }
+
+
+    /**
+     * Demais eventos necessários do Player (Não utilizados, mas era necessário implementar)
+     */
+
+    override fun onPlaybackError(error: Error) {
+        Log.d("MainActivity", "Playback error received: " + error.name)
+        when (error) {
+        // Handle error type as necessary
+            else -> {
+            }
+        }
     }
 
     override fun onLoggedOut() {

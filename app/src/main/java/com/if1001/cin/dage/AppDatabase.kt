@@ -11,6 +11,9 @@ import com.if1001.cin.dage.model.PlayList
 import com.if1001.cin.dage.model.User
 import com.if1001.cin.dage.model.Workout
 
+/**
+ * Define a Base de dados do APP e suas classes mapeadas
+ */
 @Database(entities = [(User::class), (PlayList::class), (Workout::class)], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -26,7 +29,6 @@ abstract class AppDatabase : RoomDatabase() {
                 instance!!
             } else {
                 instance = Room.databaseBuilder(context, AppDatabase::class.java, "db-name").allowMainThreadQueries().build()
-
                 return instance!!
             }
         }

@@ -4,6 +4,10 @@ import android.graphics.Bitmap
 import android.util.Base64
 import java.io.ByteArrayOutputStream
 
+/**
+ * Definições básicas reutilizáveis por diversas classes
+ */
+
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 
 val HOME_FRAGMENT_TAG = "homeTag"
@@ -19,6 +23,9 @@ val SPOTIFY_JSON_KEY_ID = "id"
 
 val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
 
+/**
+ * Transfoma Bitmap em String Base64
+ */
 fun BitMapToString(bitmap: Bitmap): String {
     val baos = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)

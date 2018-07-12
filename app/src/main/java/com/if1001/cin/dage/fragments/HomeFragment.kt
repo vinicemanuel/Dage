@@ -29,7 +29,9 @@ import com.if1001.cin.dage.format
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.util.*
 
-
+/**
+ * Fragment inicial (mapa + botão de play)
+ */
 class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
     private var mMap: GoogleMap? = null
@@ -45,6 +47,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
     private lateinit var mapPlaylistFragment: MapPlaylistFragment
 
+    /**
+     * Traking de localização
+     */
     override fun onLocationChanged(location: Location) {
 
         val myPlace = LatLng(location.latitude, location.longitude)
@@ -61,14 +66,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         val address = addresses[0].getAddressLine(0)
         val fullAddress = "$city, $address"
         this.userLocation.text = fullAddress
-    }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-    override fun onProviderEnabled(provider: String?) {}
-    override fun onProviderDisabled(provider: String?) {}
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -104,15 +101,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         return this.myView
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
+    /**
+     * Requerer permissões
+     */
     private fun requestUserPermissions() {
         if (ActivityCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -125,6 +116,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
         }
     }
 
+    /**
+     * Repetir solicitação de permissão caso o usuário negue
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             REQUEST_ID_MULTIPLE_PERMISSIONS -> {
@@ -154,4 +148,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, LocationListener {
             Log.d("Permission: ", "negando permissão")
         }
     }
+
+    /**
+     * Não utilizado
+     */
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+
+    override fun onProviderEnabled(provider: String?) {}
+    override fun onProviderDisabled(provider: String?) {}
 }

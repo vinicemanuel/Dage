@@ -5,6 +5,9 @@ import com.if1001.cin.dage.model.PLAYLIST_ID_ROW
 import com.if1001.cin.dage.model.PLAYLIST_TABLE_NAME
 import com.if1001.cin.dage.model.PlayList
 
+/**
+ * Classe de acesso a dados (BD) de playlists
+ */
 @Dao
 interface PlayListDao {
     @Query("select * from $PLAYLIST_TABLE_NAME")

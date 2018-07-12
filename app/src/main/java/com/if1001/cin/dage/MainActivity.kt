@@ -14,6 +14,9 @@ import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * Activity inicial (Solicitação de login ou bypass)
+ */
 class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE = 1337
     private lateinit var CLIENT_ID: String
@@ -23,16 +26,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Obtém icone do Spotify a partir do Font Awesome
         FontAwesome.applyToAllViews(this, findViewById(R.id.button_login_spotify))
-
         ActivityCompat.requestPermissions(this as Activity, arrayOf(Manifest.permission.INTERNET), 1)
 
-        // Get info from strings
+        // Dados base para requests ao Spotify
         CLIENT_ID = getString(R.string.spotify_client_id)
         REDIRECT_URI = "${getString(R.string.com_spotify_sdk_redirect_scheme)}://${getString(R.string.com_spotify_sdk_redirect_host)}"
 
         Log.d("ClientId", CLIENT_ID)
         Log.d("Redirect", REDIRECT_URI)
+
+        // Solicitação de autenticação
         var builder: AuthenticationRequest.Builder =
                 AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
 
@@ -44,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request)
         })
 
+        // Busca usuário na base, caso exista, faz login automático
         val user = AppDatabase.getInstance(applicationContext).UserDao().findUSer()
         if (user != null) {
             Log.d("user_saved", "${user.name} ${user.email}")
@@ -51,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Resultado da chamada de API para login
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent) {
         super.onActivityResult(requestCode, resultCode, intent)
 
@@ -71,10 +80,7 @@ class MainActivity : AppCompatActivity() {
                 AuthenticationResponse.Type.ERROR -> {
                     Log.d("Error", response.error)
                 }
-            }// Handle successful response
-            // Handle error response
-            // Most likely auth flow was cancelled
-            // Handle other cases
+            }
         }
     }
 }

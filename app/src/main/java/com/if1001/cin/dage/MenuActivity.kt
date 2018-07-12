@@ -1,7 +1,6 @@
 package com.if1001.cin.dage
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -25,10 +24,14 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-
+/**
+ * Activity principal, onde o app em si roda, ela monta os fragments e os chama
+ */
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var homeFragment: HomeFragment
     private lateinit var pastWorkoutsFragment: PastWorkoutsFragment
+
+    // Dados relativos ao Spotify
     private lateinit var CLIENT_ID: String
     private lateinit var REDIRECT_URI: String
     private lateinit var userToken: String
@@ -67,9 +70,13 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    /**
+     * Navegação do menu lateral
+     */
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
+        // Home (mapa e play para selecionar playlist)
             R.id.nav_home -> {
                 val fragment = fragmentManager.findFragmentByTag(HOME_FRAGMENT_TAG)
                 if (fragment == null) {
@@ -78,6 +85,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, this.homeFragment, HOME_FRAGMENT_TAG).commit()
                 }
             }
+        // Trocar account vinculado
             R.id.nav_logout -> {
                 val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
                         .setShowDialog(true)
@@ -86,6 +94,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 var request: AuthenticationRequest = builder.build()
                 AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request)
             }
+        // Workouts
             R.id.nav_past -> {
                 val fragment = fragmentManager.findFragmentByTag(PAST_WORKOUTS_FRAGMENT_TAG)
                 if (fragment == null) {
@@ -105,7 +114,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onDestroy()
     }
 
-    fun getUserProfile() {
+    /**
+     * Obtém dados do perfil do Spotify do usuário
+     */
+    private fun getUserProfile() {
+        // Montar chamada de API
         val request = Request.Builder()
                 .url("https://api.spotify.com/v1/me")
                 .addHeader("Authorization", "Bearer $userToken")
@@ -119,23 +132,28 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Log.d("Request", "Failed to fetch data: $e")
             }
 
+            /**
+             * Resposta da chamada de API
+             */
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
                 try {
                     val jsonObject = JSONObject(response.body()?.string())
                     Log.d("Response", jsonObject.toString())
 
+                    // Obter dados da resposta
                     val displayName = jsonObject.getString(SPOTIFY_JSON_KEY_DISPLAY_NAME)
                     val imageURL = jsonObject.getJSONArray(SPOTIFY_JSON_KEY_IMAGES).getJSONObject(0).getString(SPOTIFY_JSON_KEY_IMAGE_URL)
                     val email = jsonObject.getString(SPOTIFY_JSON_KEY_EMAIL)
                     val userId = jsonObject.getString(SPOTIFY_JSON_KEY_ID)
 
+                    // Criar objeto da classe e salvar na base de dados local
                     val user = User(imageURL, displayName, email, userId)
-
                     AppDatabase.getInstance(applicationContext).UserDao().insertUser(user)
 
                     Log.d("USER_INFOS", "$displayName $imageURL $email $userId")
 
+                    // Passar dados necessários para o fragment
                     val bundle = Bundle()
                     bundle.putString("userToken", userToken)
                     bundle.putString("userId", userId)
@@ -146,7 +164,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     pastWorkoutsFragment = PastWorkoutsFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.fragment_holder, homeFragment, HOME_FRAGMENT_TAG).commit()
 
-                    // UI changes have to be done into UI Thread
+                    // Atualizar UI com dados obtidos
                     runOnUiThread {
                         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
                         val hView = navigationView.inflateHeaderView(R.layout.nav_header_menu)
@@ -154,6 +172,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val imageView = hView.imageView
                         val tv = hView.user_name
 
+                        // Caso a imagem venha de perfil de Fcebook, obter url da imagem da API deles
                         if (imageURL.contains("facebook")) {
                             var fbUrl = "https://graph.facebook.com/${imageURL.split("&").get(0).split("=").get(1)}/picture?width=64&height=64"
                             Picasso.get().load(fbUrl).into(imageView)
@@ -170,6 +189,9 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
     }
 
+    /**
+     * Resultado da chamada de API de autorização (obtenção de Token)
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         val response = AuthenticationClient.getResponse(resultCode, data)
@@ -181,12 +203,5 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun cancelCall() {
         mCall?.cancel()
-    }
-
-    private fun getRedirectUri(): Uri {
-        return Uri.Builder()
-                .scheme(getString(R.string.com_spotify_sdk_redirect_scheme))
-                .authority(getString(R.string.com_spotify_sdk_redirect_host))
-                .build()
     }
 }

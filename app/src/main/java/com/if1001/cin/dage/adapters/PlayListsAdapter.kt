@@ -11,12 +11,14 @@ import com.if1001.cin.dage.model.PlayList
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.cell_play_lists.view.*
 
-public interface ContentListenerPlayList {
+interface ContentListenerPlayList {
     fun onItemClicked(item: PlayList)
 }
 
+/**
+ * Adapter para listagem de playlists
+ */
 class PlayListsAdapter(private val playLists: List<PlayList>, private val act: Activity, val listener: ContentListenerPlayList) : RecyclerView.Adapter<PlayListsAdapter.PlayListsHolder>() {
-
     class PlayListsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var playListName: TextView
         lateinit var playListdesc: TextView
@@ -45,6 +47,9 @@ class PlayListsAdapter(private val playLists: List<PlayList>, private val act: A
         return this.playLists.count()
     }
 
+    /**
+     * Bind de dados para view
+     */
     override fun onBindViewHolder(holder: PlayListsHolder, position: Int) {
         holder.playListName.text = playLists[position].PlayListName
         holder.playListdesc.text = playLists[position].Description
